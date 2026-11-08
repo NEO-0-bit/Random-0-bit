@@ -1,68 +1,86 @@
-#include<iostream>
+#include <iostream>
+#include <cmath>   // Required for std::fmod
+#include <limits>  // Required to clear the input buffer
 
-
-int main()
-{
-    std::cout << "\n        ============================\n";
-    std::cout << "           ***** calculator *****\n";
-    std::cout << "        ============================\n";
-
-    std::cout << "Enter an operation:";//tell the user to enter an operation(+-/*)
-    char operation;
-    std::cin >> operation;
-
-
-    std::cout << "Enter the num1:";//tell the user to enter a number 
-    double num1;
-    std::cin >> num1;
-
-    std::cout << "Enter the num2:";//tell the user to enter another number
-    double num2;
-    std::cin >> num2;
-
-
-
-    switch (operation)
-    {
-    
-        case '+':
-
-            std::cout << "Your result is: " << num1 + num2 << std::endl;//prints the sum of to numbers
-
-        break;
-
-        case '-':
-
-            std::cout << "Your result is: " << num1 - num2 << std::endl;//prints the difference of the two numbers 
-
-        break;
-
-        case '*':
-
-            std::cout << "Your result is: " << num1 * num2 << std::endl;//prints the product of the two numbers 
-
-        break;
-
-        case '/':
-
-            if(num2==0)
-            {
-                std::cout << "Error: division by 0 is not allowed!";
-            }
-            else
-            {
-                std::cout << "Your result is: " << num1 / num2 << std::endl;//prints the quotient of the division of the two numbers
-            }
-
-        break;
-
-    default:
-        std::cout << "error:Enter a valid operation!\n";
-        break;
-    }
-std::cout << "THANK YOU!\n";
-
-return 0;
-
+// Clears the input stream buffer if a user types invalid characters
+void clearInputBuffer() {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
+int main() {
+    std::cout << "====================================\n";
+    std::cout << "    ADVANCED C++ SYSTEM CALCULATOR  \n";
+    std::cout << "====================================\n";
+
+    while (true) {
+        std::cout << "\nChoose an operation (+, -, *, /, %, or 'q' to quit): ";
+        char op{'0'};
+        std::cin >> op;
+
+        // Check for exit condition first
+        if (op == 'q' || op == 'Q') {
+            std::cout << "Exiting calculator. Goodbye!\n";
+            break;
+        }
+
+        // Validate operator selection before asking for numerical values
+        if (op != '+' && op != '-' && op != '*' && op != '/' && op != '%') {
+            std::cout << "Error! Invalid operator choice. Try again.\n";
+            clearInputBuffer();
+            continue;
+        }
+
+        // Secure evaluation for the first number
+        double num1{};
+        std::cout << "Enter first number: ";
+        if (!(std::cin >> num1)) {
+            std::cout << "Error! Invalid numeric format.\n";
+            clearInputBuffer();
+            continue;
+        }
+
+        // Secure evaluation for the second number
+        double num2{};
+        std::cout << "Enter second number: ";
+        if (!(std::cin >> num2)) {
+            std::cout << "Error! Invalid numeric format.\n";
+            clearInputBuffer();
+            continue;
+        }
+
+        // Mathematical execution engine
+        switch (op) {
+            case '+':
+                std::cout << "RESULT = " << num1 + num2 << "\n";
+                break;
+
+            case '-':
+                std::cout << "RESULT = " << num1 - num2 << "\n";
+                break;
+
+            case '*':
+                std::cout << "RESULT = " << num1 * num2 << "\n";
+                break;
+
+            case '/':
+                if (num2 == 0.0) {
+                    std::cout << "Math Error! Division by zero is undefined.\n";
+                } else {
+                    std::cout << "RESULT = " << num1 / num2 << "\n";
+                }
+                break;
+
+            case '%':
+                if (num2 == 0.0) {
+                    std::cout << "Math Error! Modulo by zero is undefined.\n";
+                } else {
+                    // Safe decimal modulo computation replacing traditional integer truncation
+                    std::cout << "RESULT (Remainder) = " << std::fmod(num1, num2) << "\n";
+                }
+                break;
+        }
+    }
+
+    return 0;
+}
