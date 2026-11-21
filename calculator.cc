@@ -1,86 +1,91 @@
 #include <iostream>
-#include <cmath>   // Required for std::fmod
-#include <limits>  // Required to clear the input buffer
 
-// Clears the input stream buffer if a user types invalid characters
-void clearInputBuffer() {
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-}
+using namespace std;
 
-int main() {
-    std::cout << "====================================\n";
-    std::cout << "    ADVANCED C++ SYSTEM CALCULATOR  \n";
-    std::cout << "====================================\n";
+int main()
+{
+    cout << "\n     ***** CALCULATOR *****\n";
+    
+    int choice{};
+do
+{
+    cout << "1. Addition\n";
+    cout << "2. Substraction\n";
+    cout << "3. Multplication\n";
+    cout << "4. Divion\n";
+    cout << "5. Modulus\n";
+    cout << "6. Exit\n";
+    cout << "Chose an option: ";
+    cin >> choice;
 
-    while (true) {
-        std::cout << "\nChoose an operation (+, -, *, /, %, or 'q' to quit): ";
-        char op{'0'};
-        std::cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            choice = 0; 
+        }
 
-        // Check for exit condition first
-        if (op == 'q' || op == 'Q') {
-            std::cout << "Exiting calculator. Goodbye!\n";
+        if (choice == 6) {
+            cout << "Exiting calculator. Goodbye!\n";
             break;
         }
 
-        // Validate operator selection before asking for numerical values
-        if (op != '+' && op != '-' && op != '*' && op != '/' && op != '%') {
-            std::cout << "Error! Invalid operator choice. Try again.\n";
-            clearInputBuffer();
+        if (choice < 1 || choice > 6) {
+            cout << "Invalid choice! Please select 1-6.\n";
             continue;
         }
+    
 
-        // Secure evaluation for the first number
-        double num1{};
-        std::cout << "Enter first number: ";
-        if (!(std::cin >> num1)) {
-            std::cout << "Error! Invalid numeric format.\n";
-            clearInputBuffer();
-            continue;
-        }
+    double num1{};
+    double num2{};
 
-        // Secure evaluation for the second number
-        double num2{};
-        std::cout << "Enter second number: ";
-        if (!(std::cin >> num2)) {
-            std::cout << "Error! Invalid numeric format.\n";
-            clearInputBuffer();
-            continue;
-        }
-
-        // Mathematical execution engine
-        switch (op) {
-            case '+':
-                std::cout << "RESULT = " << num1 + num2 << "\n";
+    cout << "Enter num1: ";
+    cin >> num1;
+    
+    cout << "Enter num2: ";
+    cin >> num2;
+    
+    switch (choice) {
+        
+        case 1 :
+                cout << "Result = " << num1 + num2 << "\n";
                 break;
-
-            case '-':
-                std::cout << "RESULT = " << num1 - num2 << "\n";
+                
+        case 2 :
+                cout << "Result = " << num1 - num2 << "\n";
                 break;
-
-            case '*':
-                std::cout << "RESULT = " << num1 * num2 << "\n";
+                
+        case 3 :
+                cout << "Result = " << num1 * num2 << "\n";
                 break;
-
-            case '/':
-                if (num2 == 0.0) {
-                    std::cout << "Math Error! Division by zero is undefined.\n";
-                } else {
-                    std::cout << "RESULT = " << num1 / num2 << "\n";
+                
+        case 4 :
+                
+                if(num2 == 0)
+                {
+                    cout << "Error! division by 0 is not allowed.\n";
+                }
+                else {
+                    cout << "Result = " << num1 / num2 <<+ "\n";    
                 }
                 break;
-
-            case '%':
-                if (num2 == 0.0) {
-                    std::cout << "Math Error! Modulo by zero is undefined.\n";
-                } else {
-                    // Safe decimal modulo computation replacing traditional integer truncation
-                    std::cout << "RESULT (Remainder) = " << std::fmod(num1, num2) << "\n";
+                
+        case 5 :
+                if(num2 == 0)
+                {
+                    cout << "Error! division by 0 is not allowed.\n";
+                }
+                else if(num1 != (int)num1 || num2 != (int)num2)
+                {
+                    cout << "Error! modulo by 0 is not allowed.\n";
+                }
+                else
+                {
+                    cout << "Result = " << (int)num1 % (int)num2 << "\n";
                 }
                 break;
-        }
+                
+        default : cout << "Error! Invalid operator.\n";
     }
-
+} while(choice != 6);
     return 0;
 }
